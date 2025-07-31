@@ -195,7 +195,7 @@ export async function loginWithGoogle(req, res) {
         address: "Not Given",
         phone: "Not given",
         profilePicture: response.data.picture,
-        emailVerified: true,
+        emailVerified: false,
       });
       const savedUser = await newUser.save();
       const token = jwt.sign(
