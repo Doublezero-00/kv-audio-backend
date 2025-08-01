@@ -40,16 +40,13 @@ app.use((req, res, next) => {
 let mongoUrl = process.env.MONGO_URL;
 
 mongoose
-  .connect(mongoUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(mongoUrl)
   .then(() => {
     console.log("✅ MongoDB database connection established successfully");
   })
   .catch((err) => {
     console.error("❌ MongoDB connection failed:", err.message);
-    process.exit(1); // terminate app on DB failure
+    process.exit(1);
   });
 
 app.use("/api/users", userRouter);
@@ -58,6 +55,7 @@ app.use("/api/products", productRouter);
 //app.use("/api/inquiries", inquiryRouter);
 //app.use("/api/orders", orderRouter);
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
