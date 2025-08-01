@@ -12,6 +12,9 @@ import cors from "cors";
 
 dotenv.config();
 
+console.log("🚀 Server is starting...");
+console.log("🔐 Mongo URL:", process.env.MONGO_URL ? "Loaded" : "Missing!");
+
 let app = express();
 app.use(cors()); //middleware to allow cross-origin requests
 app.use(bodyParser.json()); //middleware
@@ -36,13 +39,18 @@ app.use((req, res, next) => {
 
 let mongoUrl = process.env.MONGO_URL;
 
-mongoose.connect(mongoUrl);
-
-let connection = mongoose.connection;
-
-connection.once("open", () => {
-  console.log("MongoDB database connection established successfully");
-});
+mongoose
+  .connect(mongoUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("✅ MongoDB database connection established successfully");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB connection failed:", err.message);
+    process.exit(1); // terminate app on DB failure
+  });
 
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
