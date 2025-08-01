@@ -55,6 +55,11 @@ app.use("/api/products", productRouter);
 //app.use("/api/inquiries", inquiryRouter);
 //app.use("/api/orders", orderRouter);
 
+// Health check route for Railway to verify app is running
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
